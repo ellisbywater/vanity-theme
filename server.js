@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const config = require('config');
 const dotenv = require('dotenv')
+require('isomorphic-fetch')
 dotenv.config()
 
 const app = express();
@@ -11,14 +12,12 @@ const app = express();
 app.use(express.json());
 
 // DB Config
-const db = config.get('mongoURI');
+// const db = config.get('development.mongoURI');
+const dbConfig = require('./config/db')
 
 // Connect to Mongo
 mongoose
-  .connect(db, { 
-    useNewUrlParser: true,
-    useCreateIndex: true
-  }) // Adding new mongo url parser
+  .connect(dbConfig.dev.uri, {useNewUrlParser: true}) // Adding new mongo url parser
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
 
@@ -26,7 +25,7 @@ mongoose
 app.use('/api/items', require('./routes/api/items'));
 app.use('/api/users', require('./routes/api/users'));
 app.use('/api/auth', require('./routes/api/auth'));
-app.use('/api/unsplash', require('./routes/api/unsplash'))
+app.use('/api/unsplash', require('./routes/api/unsplash'));
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
