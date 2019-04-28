@@ -1,14 +1,9 @@
 const router = require('express').Router()
-const fetch = require('node-fetch')
 const axios = require('axios')
-const Unsplash = require('unsplash-js').default
-const toJson = require('unsplash-js').toJson
 const dotenv = require('dotenv')
 dotenv.config()
 
 const { PIXABAY_KEY } = process.env
-
-const people = 'people'
 
 const pixabay_uri = `https://pixabay.com/api/?key=${PIXABAY_KEY}&q=people`
 
